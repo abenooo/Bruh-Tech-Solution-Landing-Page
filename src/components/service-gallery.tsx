@@ -9,7 +9,7 @@ import { useState } from "react";
  * the shared Unsplash placeholder (placeholder-{n}.jpg) until one exists.
  */
 
-const SLOTS = [1, 2, 3, 4];
+const SLOTS = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export function ServiceGallery({ slug, title }: { slug: string; title: string }) {
   const [active, setActive] = useState(0);
@@ -55,7 +55,7 @@ export function ServiceGallery({ slug, title }: { slug: string; title: string })
       </div>
       <p className="sg-note">
         Placeholder imagery — replace with product screenshots at{" "}
-        <code>public/service-shots/{slug}-1.png … {slug}-4.png</code>
+        <code>public/service-shots/{slug}-1.png … {slug}-8.png</code>
       </p>
     </div>
   );
