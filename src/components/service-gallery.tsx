@@ -3,34 +3,60 @@
 import { useState } from "react";
 
 /*
- * Screenshot gallery for a service detail page. Looks for images at
- * public/service-shots/{slug}-1.png and {slug}-2.png — drop files there and
- * they appear automatically; missing slots show a labeled placeholder.
+ * Detail-page gallery: one large featured image with a grid of thumbnails
+ * beside it — clicking a thumbnail features it. Each slot looks for a real
+ * screenshot at public/service-shots/{slug}-{n}.png first and falls back to
+ * the shared Unsplash placeholder (placeholder-{n}.jpg) until one exists.
  */
 
-function Frame({ src, label, slug, n }: { src: string; label: string; slug: string; n: number }) {
-  const [missing, setMissing] = useState(false);
-  return (
-    <figure className="sg-frame">
-      <span className="sg-bar" aria-hidden><i /><i /><i /></span>
-      {missing ? (
-        <div className="sg-slot">
-          <b>{label}</b>
-          <span>Drop a screenshot at<br /><code>public/service-shots/{slug}-{n}.png</code></span>
-        </div>
-      ) : (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img src={src} alt={label} onError={() => setMissing(true)} />
-      )}
-    </figure>
-  );
-}
+const SLOTS = [1, 2, 3, 4, 5];
 
 export function ServiceGallery({ slug, title }: { slug: string; title: string }) {
+  const [active, setActive] = useState(0);
+  const [srcs, setSrcs] = useState<string[]>(
+    SLOTS.map((n) => `/service-shots/${slug}-${n}.png`)
+  );
+
+  const fallback = (i: number) =>
+    setSrcs((prev) => {
+      const ph = `/service-shots/placeholder-${SLOTS[i]}.jpg`;
+      if (prev[i] === ph) return prev;
+      const next = [...prev];
+      next[i] = ph;
+      return next;
+    });
+
   return (
-    <div className="sg">
-      <Frame src={`/service-shots/${slug}-1.png`} label={`${title} — overview`} slug={slug} n={1} />
-      <Frame src={`/service-shots/${slug}-2.png`} label={`${title} — in action`} slug={slug} n={2} />
+    <div>
+      <div className="sg">
+        <div className="sg-main">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            key={srcs[active]}
+            src={srcs[active]}
+            alt={`${title} — screenshot ${active + 1}`}
+            onError={() => fallback(active)}
+          />
+        </div>
+        <div className="sg-thumbs">
+          {SLOTS.map((n, i) => (
+            <button
+              key={n}
+              className={`sg-thumb ${i === active ? "on" : ""}`}
+              aria-label={`Show screenshot ${n}`}
+              aria-pressed={i === active}
+              onClick={() => setActive(i)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={srcs[i]} alt="" onError={() => fallback(i)} />
+            </button>
+          ))}
+        </div>
+      </div>
+      <p className="sg-note">
+        Placeholder imagery — replace with product screenshots at{" "}
+        <code>public/service-shots/{slug}-1.png … {slug}-5.png</code>
+      </p>
     </div>
   );
 }
