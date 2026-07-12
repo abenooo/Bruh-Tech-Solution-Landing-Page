@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { SmoothScroll, Reveal } from "@/components/motion";
+import { services } from "@/lib/services";
 import { LetsBuild } from "@/components/lets-build";
 import { Navbar } from "@/components/navbar";
 import { MercuryHero } from "@/components/mercury-hero";
@@ -9,25 +11,6 @@ import { TeamsTabs } from "@/components/teams-tabs";
 import { ProcessSteps } from "@/components/process-steps";
 import { ThenNow } from "@/components/then-now";
 import { Products } from "@/components/products";
-
-const modules = [
-  { icon: "👥", t: "Member Management", d: "Member registration, KYC, profiles, beneficiary management, lifecycle management." },
-  { icon: "💰", t: "Savings Management", d: "Savings products, deposits, withdrawals, interest calculation, passbook management." },
-  { icon: "🏦", t: "Loan Management", d: "Loan applications, approvals, disbursement, repayment, restructuring, collections." },
-  { icon: "📈", t: "Share Management", d: "Share purchase, transfer, redemption, member equity tracking." },
-  { icon: "🎁", t: "Dividend Management", d: "Dividend calculation, approval, allocation, and distribution to members." },
-  { icon: "📒", t: "Accounting Engine", d: "Double-entry accounting, general ledger, journal entries, and financial postings." },
-  { icon: "📊", t: "Financial Reporting", d: "Financial statements, operational reports, dashboards, and analytics." },
-  { icon: "✅", t: "Approval Workflow Engine", d: "Configurable multi-level approvals for financial and administrative operations." },
-  { icon: "🌐", t: "Integration Layer", d: "APIs for core banking, mobile money, payment gateways, SMS, email, and third-party services." },
-  { icon: "🏢", t: "Branch Management", d: "Multi-branch operations, branch performance, users, and cash management." },
-  { icon: "👨\u200D💼", t: "Human Resource Management", d: "Staff management, roles, attendance, payroll, and performance tracking." },
-  { icon: "🔐", t: "Security & Access Control", d: "Authentication, authorization, MFA, permissions, and role-based access control." },
-  { icon: "📜", t: "Audit & Compliance", d: "Audit logs, compliance monitoring, regulatory reporting, and risk management." },
-  { icon: "⚙\uFE0F", t: "System Administration", d: "Configuration, product setup, parameters, notifications, backups, and maintenance." },
-  { icon: "📱", t: "Digital Channels", d: "Mobile app, web portal, USSD, agent banking, self-service, and customer engagement." },
-];
-
 
 export default function Home() {
   return (
@@ -67,21 +50,21 @@ export default function Home() {
         </div>
         <Reveal as="div">
           <ul className="svc-list">
-            {modules.map((m, index) => (
-              <li key={m.t}>
-                <a className="svc-row" href="#contact">
+            {services.map((m) => (
+              <li key={m.slug}>
+                <Link className="svc-row" href={`/services/${m.slug}`}>
                   <span className="left">
-                    <span className="no">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="t">{m.t}</span>
+                    <span className="no">{m.no}</span>
+                    <span className="t">{m.title}</span>
                   </span>
                   <span className="right">
-                    <span className="d">{m.d} <strong>→ View Details</strong></span>
+                    <span className="d">{m.summary} <strong>→ View details</strong></span>
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M7 7h10v10" />
                       <path d="M7 17 17 7" />
                     </svg>
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

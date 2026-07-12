@@ -8,13 +8,14 @@ import { ThemeToggle } from "@/components/theme-toggle";
  * frosted blur. Slides down on load. Collapses to a burger menu on mobile.
  */
 
+/* absolute paths so the links work from detail pages too */
 const links = [
-  { label: "Process", href: "#process" },
-  { label: "Platform", href: "#platform" },
-  { label: "Products", href: "#products" },
-  { label: "Modules", href: "#modules" },
-  { label: "App", href: "#app" },
-  { label: "Then & now", href: "#then-now" },
+  { label: "Process", href: "/#process" },
+  { label: "Platform", href: "/#platform" },
+  { label: "Products", href: "/#products" },
+  { label: "Modules", href: "/#modules" },
+  { label: "App", href: "/#app" },
+  { label: "Then & now", href: "/#then-now" },
 ];
 
 const Arrow = () => (
@@ -55,7 +56,7 @@ export function Navbar() {
 
         <div className="nb-right">
           <ThemeToggle />
-          <a className="nb-cta" href="#contact">
+          <a className="nb-cta" href="/#contact">
             <span>Request a demo</span>
             <Arrow />
           </a>
@@ -82,7 +83,7 @@ export function Navbar() {
         {links.map((l) => (
           <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
         ))}
-        <a className="nb-cta nb-cta-menu" href="#contact" onClick={() => setOpen(false)}>
+        <a className="nb-cta nb-cta-menu" href="/#contact" onClick={() => setOpen(false)}>
           <span>Request a demo</span>
           <Arrow />
         </a>
