@@ -131,6 +131,9 @@ html.dark .gl-team .t-row2 { background: rgba(246, 239, 227, 0.12); color: #F6EF
 .nb-links a:hover { color: #F6EFE3; background: rgba(246, 239, 227, 0.08); }
 .nb-solid .nb-links a { color: rgba(27, 36, 31, 0.62); }
 .nb-solid .nb-links a:hover { color: #1B241F; background: rgba(27, 36, 31, 0.06); }
+/* scrollspy: the section currently in view */
+.nb-solid .nb-links a.on { color: #1B241F; background: rgba(27, 36, 31, 0.08); font-weight: 500; }
+html.dark .nb-solid .nb-links a.on { color: #F6EFE3; background: rgba(246, 239, 227, 0.12); }
 .nb-right { display: flex; align-items: center; gap: 8px; }
 .nb-cta { display: none; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 999px;
   background: #E8B54A; color: #16211C; font-size: 14px; font-weight: 500; letter-spacing: -0.01em;

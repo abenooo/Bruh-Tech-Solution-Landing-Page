@@ -25,12 +25,37 @@ const Arrow = () => (
   </svg>
 );
 
+const sectionIds = links.map((l) => l.href.split("#")[1]);
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  /* scrollspy — highlight the link whose section sits under the viewport center */
+  useEffect(() => {
+    const onScroll = () => {
+      const mid = window.innerHeight * 0.45;
+      let cur: string | null = null;
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const r = el.getBoundingClientRect();
+        if (r.top <= mid && r.bottom > mid) { cur = id; break; }
+      }
+      setActive(cur);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
@@ -50,7 +75,14 @@ export function Navbar() {
 
         <div className="nb-links">
           {links.map((l) => (
-            <a key={l.href} href={l.href}>{l.label}</a>
+            <a
+              key={l.href}
+              href={l.href}
+              className={active === l.href.split("#")[1] ? "on" : undefined}
+              aria-current={active === l.href.split("#")[1] ? "true" : undefined}
+            >
+              {l.label}
+            </a>
           ))}
         </div>
 
