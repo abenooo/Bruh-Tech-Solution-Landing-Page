@@ -798,7 +798,7 @@ html.dark .asc-dot.on { background: #F6EFE3; }
 /* detail-page gallery — featured image + selectable thumbnails */
 .sg { display: grid; grid-template-columns: 1fr; gap: 14px; }
 .sg-main { border-radius: 18px; overflow: hidden; border: 1px solid var(--rule); background: var(--panel);
-  aspect-ratio: 4 / 3.4; }
+  aspect-ratio: 4 / 3; }
 @keyframes sgIn { from { opacity: 0; transform: scale(1.02); } to { opacity: 1; transform: none; } }
 .sg-main img { width: 100%; height: 100%; object-fit: cover; display: block;
   animation: sgIn 0.45s var(--ease-out); }
@@ -811,7 +811,7 @@ html.dark .asc-dot.on { background: #F6EFE3; }
 .sg-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 @media (min-width: 800px) {
   .sg { grid-template-columns: 1.8fr 1fr; align-items: stretch; }
-  .sg-main { aspect-ratio: auto; min-height: clamp(500px, 48vw, 720px); }
+  .sg-main { aspect-ratio: auto; min-height: clamp(380px, 36vw, 540px); }
   .sg-thumbs { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
 }
 .sg-note { margin: 14px 0 44px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
