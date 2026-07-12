@@ -60,7 +60,7 @@ export function AppShots() {
 
   const s = screens[active];
   return (
-    <section className="as" id="app-demo">
+    <section className="as" id="app">
       <Reveal as="div" className="as-head">
         <div className="eyebrow">( App demo )</div>
         <h2 className="display">The member app, screen by screen.</h2>

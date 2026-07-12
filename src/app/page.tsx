@@ -5,7 +5,7 @@ import { LetsBuild } from "@/components/lets-build";
 import { Navbar } from "@/components/navbar";
 import { MercuryHero } from "@/components/mercury-hero";
 import { MoneyAll } from "@/components/money-all";
-import { ProductPhone } from "@/components/product-phone";
+import { AppShots } from "@/components/app-shots";
 import { TeamTiles } from "@/components/data-sections";
 import { TeamsTabs } from "@/components/teams-tabs";
 import { ProcessSteps } from "@/components/process-steps";
@@ -71,8 +71,8 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* the mobile app — story, live mock, and screenshot demo in one place */}
-      <ProductPhone />
+      {/* the member app — screen-by-screen demo */}
+      <AppShots />
 
       {/* data sections (Selene-style) */}
       <TeamTiles />
