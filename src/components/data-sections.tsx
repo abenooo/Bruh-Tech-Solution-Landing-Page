@@ -1,63 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Reveal } from "@/components/motion";
 
 /*
- * Selene-style sections:
- *  1. DataLight — "See your data in a new light": a live theme switch that
- *     flips a mini reports dashboard between dark and light, with a smooth
- *     cross-transition on every surface.
- *  2. TeamTiles — "Built to work the way your team thinks": a snap-scrolling
- *     row of product tiles, each with a floating UI card over an image area.
+ * TeamTiles — "Built to work the way your team thinks": a self-drifting
+ * row of product tiles, each with a live glass card over a gradient scene.
  */
-
-export function DataLight() {
-  const [light, setLight] = useState(false);
-  return (
-    <section className="dl container">
-      <Reveal as="div" className="dl-head">
-        <div>
-          <h2 className="display">See your data in a new light</h2>
-          <p>Switch between light and dark to match how your committee works.</p>
-        </div>
-        <button
-          className={`dl-switch ${light ? "on" : ""}`}
-          onClick={() => setLight((v) => !v)}
-          role="switch"
-          aria-checked={light}
-          aria-label="Toggle light theme"
-        >
-          <i />
-        </button>
-      </Reveal>
-      <Reveal as="div">
-        <div className={`dl-dash ${light ? "light" : ""}`} aria-hidden>
-          <aside>
-            <b>Reports</b>
-            {["Overview", "Portfolio", "Branches", "Dividends"].map((x, i) => (
-              <span key={x} className={i === 0 ? "on" : ""}>{x}</span>
-            ))}
-          </aside>
-          <div className="dl-main">
-            <div className="dl-cards">
-              <div><span>Deposits this week</span><b>ETB 2.4M</b><i className="pos">▲ 8.1%</i></div>
-              <div><span>Loans disbursed</span><b>412</b><i className="pos">▲ 3.2%</i></div>
-              <div><span>PAR 30</span><b>2.4%</b><i>▼ 0.3%</i></div>
-            </div>
-            <div className="dl-chart">
-              <svg viewBox="0 0 100 40" preserveAspectRatio="none">
-                {[8, 16, 12, 22, 18, 26, 24, 32, 28, 36].map((h, i) => (
-                  <rect key={i} x={i * 10 + 2} y={40 - h} width="6" height={h} rx="1.4" className={i === 9 ? "hot" : ""} />
-                ))}
-              </svg>
-            </div>
-          </div>
-        </div>
-      </Reveal>
-    </section>
-  );
-}
 
 /* --- live internals for the tiles --- */
 

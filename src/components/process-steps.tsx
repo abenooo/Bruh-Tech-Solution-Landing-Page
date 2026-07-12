@@ -172,7 +172,7 @@ export function ProcessSteps() {
   }
 
   return (
-    <section className="ps-wrap" ref={wrapRef} aria-label="How we deliver">
+    <section className="ps-wrap" id="process" ref={wrapRef} aria-label="How we deliver">
       {/* static version for screen readers and reduced motion */}
       <ol className="sr-steps">
         {steps.map((s, i) => (

@@ -9,10 +9,12 @@ import { ThemeToggle } from "@/components/theme-toggle";
  */
 
 const links = [
+  { label: "Process", href: "#process" },
   { label: "Platform", href: "#platform" },
   { label: "Products", href: "#products" },
   { label: "Modules", href: "#modules" },
   { label: "App", href: "#app" },
+  { label: "Then & now", href: "#then-now" },
 ];
 
 const Arrow = () => (
