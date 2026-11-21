@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 /*
  * Mercury-style hero, per spec:
@@ -17,6 +18,7 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 export function MercuryHero() {
+  const { t } = useLanguage();
   const wrapRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -109,10 +111,9 @@ export function MercuryHero() {
         <div className="mh-dim" ref={dimRef} aria-hidden />
         <div className={`mh-content ${loaded ? "mh-in" : ""}`} ref={contentRef}>
           <span className="mh-blur" aria-hidden />
-          <h1 className="display mh-stagger">The ledger moves from the savings box to the core.</h1>
+          <h1 className="display mh-stagger">{t.hero.headline}</h1>
           <p className="mh-sub mh-stagger">
-            The Ethio SACCO Platform digitizes Ethiopia&apos;s savings and credit cooperatives
-            end to end — one audit-grade core for membership, savings, loans, shares and payments.
+            {t.hero.subhead}
           </p>
         </div>
       </div>

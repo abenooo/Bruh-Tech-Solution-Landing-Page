@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/motion";
 import { FlowCore } from "@/components/flow-mocks";
+import { useLanguage } from "@/lib/i18n";
 
 /*
  * Three-product carousel (Toggle Pro-style): visual on the left with an
@@ -82,7 +83,7 @@ function UssdVisual() {
     <div className="phone pr-phone" aria-hidden>
       <div className="phone-notch" />
       <div className="phone-screen ussd">
-        <div className="ussd-head">*889# · Ethio SACCO</div>
+        <div className="ussd-head">*889# · Maedot SACCO</div>
         {["1. Balance inquiry", "2. Deposit (Telebirr)", "3. Withdraw", "4. Transfer to member", "5. Loan status", "6. Buy shares", "7. Mini statement", "0. Help"].map((l, i) => (
           <div key={l} className="ussd-line" style={{ "--i": i } as React.CSSProperties}>{l}</div>
         ))}
@@ -101,8 +102,33 @@ function CoreVisual() {
 }
 
 export function Products() {
+  const { t } = useLanguage();
   const [active, setActive] = useState(0);
   const hoverRef = useRef(false);
+
+  const localizedProducts = [
+    {
+      ...products[0],
+      tag: t.products.p1.tag,
+      t: t.products.p1.title,
+      d: t.products.p1.desc,
+      more: t.products.p1.more,
+    },
+    {
+      ...products[1],
+      tag: t.products.p2.tag,
+      t: t.products.p2.title,
+      d: t.products.p2.desc,
+      more: t.products.p2.more,
+    },
+    {
+      ...products[2],
+      tag: t.products.p3.tag,
+      t: t.products.p3.title,
+      d: t.products.p3.desc,
+      more: t.products.p3.more,
+    },
+  ];
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -120,13 +146,13 @@ export function Products() {
       onMouseLeave={() => { hoverRef.current = false; }}
     >
       <Reveal as="div" className="pr-head container">
-        <div className="eyebrow">( Our products )</div>
-        <h2 className="display">One core. Three ways in.</h2>
-        <p>Web administration for the office, a mobile app for smartphones, and USSD for every other phone — the same ledger behind all three.</p>
+        <div className="eyebrow">{t.modules.eyebrow}</div>
+        <h2 className="display">{t.products.title}</h2>
+        <p>{t.products.p1.desc}</p>
       </Reveal>
 
       <div className="pr-stage container">
-        {products.map((p, i) => (
+        {localizedProducts.map((p, i) => (
           <div key={p.n} className={`pr-slide ${i === active ? "on" : i < active ? "prev" : ""}`} aria-hidden={i !== active}>
             <div className="pr-vis">
               <span className="pr-glow" />
@@ -147,7 +173,7 @@ export function Products() {
       </div>
 
       <div className="pr-dots" role="tablist" aria-label="Products">
-        {products.map((p, i) => (
+        {localizedProducts.map((p, i) => (
           <button
             key={p.n}
             role="tab"

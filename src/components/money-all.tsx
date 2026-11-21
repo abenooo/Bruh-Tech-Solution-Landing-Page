@@ -2,30 +2,24 @@
 
 import { useEffect, useRef } from "react";
 import { FlowCore, FlowTeller, FlowPay, FlowAudit } from "@/components/flow-mocks";
-
-/*
- * Mercury-style "Everything you do with money. All in one place." section:
- * a dark stage pinned over a 500vh range. The heading rides above a list of
- * four areas on the left — the active one expands its subtitle and fills a
- * thin progress rail as its slice of scroll plays — while the right-side
- * visual crossfades per item. Items are clickable to jump the scroll.
- * Placeholder titles/videos — swap for final SACCO content later.
- */
-
-const items = [
-  { t: "Core banking & more", d: "Membership, savings, shares and double-entry accounting on one ledger — with branch cash management built in.", flow: <FlowCore /> },
-  { t: "Teller & branch operations", d: "Front-office queues, passbooks and an end-of-day close that reconciles itself.", flow: <FlowTeller /> },
-  { t: "Payments & channels", d: "Telebirr, CBE and USSD on the same rails — posted once, visible everywhere.", flow: <FlowPay /> },
-  { t: "Reports & audit", d: "Regulator packs and a 245-requirement audit trail, generated on schedule.", flow: <FlowAudit /> },
-];
+import { useLanguage } from "@/lib/i18n";
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
+const flows = [<FlowCore key="core" />, <FlowTeller key="teller" />, <FlowPay key="pay" />, <FlowAudit key="audit" />];
+
 export function MoneyAll() {
+  const { t } = useLanguage();
   const wrapRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const visRef = useRef<HTMLDivElement>(null);
   const headRef = useRef<HTMLHeadingElement>(null);
+
+  const items = t.platform.items.map((it, i) => ({
+    t: it.t,
+    d: it.d,
+    flow: flows[i] || flows[0],
+  }));
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -48,18 +42,35 @@ export function MoneyAll() {
       const hin = clamp01(p / 0.1);
       head.style.opacity = String(0.25 + 0.75 * hin);
 
-      /* 4 items share the remaining range */
-      const f = clamp01((p - 0.1) / 0.86) * items.length;
-      const idx = Math.min(items.length - 1, Math.floor(f));
-      const local = clamp01(f - idx);
+      /* 4 items split the scroll range from p=0.12 to p=0.98 */
+      const start = 0.12;
+      const slice = (0.98 - start) / 4;
+      const rawIdx = Math.floor((p - start) / slice);
+      const idx = p < start ? 0 : Math.min(3, Math.max(0, rawIdx));
 
       if (idx !== cur) {
         cur = idx;
-        rows.forEach((row, i) => row.classList.toggle("on", i === idx));
-        panels.forEach((panel, i) => panel.classList.toggle("on", i === idx));
+        rows.forEach((row, i) => {
+          if (i === idx) row.classList.add("on");
+          else row.classList.remove("on");
+        });
+        panels.forEach((pan, i) => {
+          if (i === idx) pan.classList.add("on");
+          else pan.classList.remove("on");
+        });
       }
-      const fill = rows[idx]?.querySelector(".ma-fill") as HTMLElement | null;
-      if (fill) fill.style.height = `${local * 100}%`;
+
+      /* progress rail inside the active item fills linearly with its slice */
+      rows.forEach((row, i) => {
+        const fill = row.querySelector(".ma-fill") as HTMLElement | null;
+        if (!fill) return;
+        if (i < idx) fill.style.transform = "scaleX(1)";
+        else if (i > idx) fill.style.transform = "scaleX(0)";
+        else {
+          const sub = clamp01((p - (start + i * slice)) / slice);
+          fill.style.transform = `scaleX(${sub})`;
+        }
+      });
 
       raf = requestAnimationFrame(tick);
     };
@@ -81,7 +92,7 @@ export function MoneyAll() {
         <div className="container ma-grid">
           <div className="ma-left">
             <h2 className="display ma-head" ref={headRef}>
-              Everything you do with money.<br />All in one place.
+              {t.platform.title}
             </h2>
             <div className="ma-items" ref={listRef}>
               {items.map((x, i) => (
@@ -95,7 +106,7 @@ export function MoneyAll() {
               ))}
             </div>
             <a className="ma-demo" href="#contact">
-              Request a demo
+              {t.nav.requestDemo}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M5 12h14" /><path d="m13 6 6 6-6 6" />
               </svg>

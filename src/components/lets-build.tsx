@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 /*
  * Pinned scroll scene: "Let's" and "build" fly in from opposite screen edges,
@@ -33,6 +34,7 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 export function LetsBuild() {
+  const { t } = useLanguage();
   const wrapRef = useRef<HTMLElement>(null);
   const leftRef = useRef<HTMLSpanElement>(null);
   const rightRef = useRef<HTMLSpanElement>(null);
@@ -99,7 +101,7 @@ export function LetsBuild() {
 
   const headline = (
     <>
-      Let&rsquo;s <span className="gold">build</span>
+      {t.letsBuild.left} <span className="gold">{t.letsBuild.right}</span>
     </>
   );
 
@@ -109,8 +111,8 @@ export function LetsBuild() {
         <div>
           <div className="lb-title-box">
             <h2 className="lb-title" ref={titleRef}>
-              <span className="w" ref={leftRef}>Let&rsquo;s</span>{" "}
-              <span className="w gold" ref={rightRef}>build</span>
+              <span className="w" ref={leftRef}>{t.letsBuild.left}</span>{" "}
+              <span className="w gold" ref={rightRef}>{t.letsBuild.right}</span>
             </h2>
             <div ref={shardsRef}>
               {SHARDS.map((sh, i) => (
@@ -120,9 +122,9 @@ export function LetsBuild() {
               ))}
             </div>
           </div>
-          <p className="eyebrow lb-eyebrow" ref={eyeRef}>( Where discipline meets delivery )</p>
+          <p className="eyebrow lb-eyebrow" ref={eyeRef}>{t.letsBuild.eye}</p>
         </div>
-        <p className="lb-hint" ref={hintRef} aria-hidden>( Keep scrolling )</p>
+        <p className="lb-hint" ref={hintRef} aria-hidden>{t.letsBuild.hint}</p>
       </div>
     </section>
   );

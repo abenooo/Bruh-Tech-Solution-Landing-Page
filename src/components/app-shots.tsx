@@ -1,28 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Reveal } from "@/components/motion";
-
-/*
- * Phone-scroll carousel: one glowing phone on the left, per-screen copy on
- * the right. Advancing slides the next screenshot up inside the frame while
- * the text crossfades, with bar pagination below. Auto-advances, pauses on
- * hover; screens live at public/app-screens/shot-N.png.
- */
-
-const screens = [
-  { src: "/app-screens/shot-1.png", t: "Everything on the home screen", d: "Balance card, quick actions and every service a member needs — savings, loans, shares and payments in one place." },
-  { src: "/app-screens/shot-2.png", t: "Membership, in full detail", d: "Member card, share capital, contributions and benefits — the cooperative relationship, made visible." },
-  { src: "/app-screens/shot-3.png", t: "Loans at a glance", d: "Balances, interest and repayment progress for every active loan, updated the moment a payment posts." },
-  { src: "/app-screens/shot-4.png", t: "A calculator that shows its work", d: "The full amortization schedule before you apply — monthly payment, total interest and the exact pay-off date." },
-  { src: "/app-screens/shot-5.png", t: "Speaks your language", d: "English, Amharic, Afan Oromo, Tigrigna and Af-Soomaali — members bank in the language they think in." },
-];
+import { useLanguage } from "@/lib/i18n";
 
 export function AppShots() {
+  const { t } = useLanguage();
   const [[active, prev], setPair] = useState<[number, number]>([0, -1]);
   const hoverRef = useRef(false);
   const touchedRef = useRef(0);
   const downRef = useRef<{ x: number; y: number } | null>(null);
+
+  const screens = useMemo(() => [
+    { src: "/app-screens/shot-1.png", t: t.appShots.s1.t, d: t.appShots.s1.d },
+    { src: "/app-screens/shot-2.png", t: t.appShots.s2.t, d: t.appShots.s2.d },
+    { src: "/app-screens/shot-3.png", t: t.appShots.s3.t, d: t.appShots.s3.d },
+    { src: "/app-screens/shot-4.png", t: t.appShots.s4.t, d: t.appShots.s4.d },
+    { src: "/app-screens/shot-5.png", t: t.appShots.s5.t, d: t.appShots.s5.d },
+  ], [t.appShots]);
 
   const go = (i: number) => {
     touchedRef.current = Date.now();
@@ -43,7 +38,7 @@ export function AppShots() {
       setPair(([a]) => [(a + 1) % screens.length, a]);
     }, 3000);
     return () => clearInterval(id);
-  }, []);
+  }, [screens.length]);
 
   /* manual: swipe / drag left-right on the phone */
   const onDown = (e: React.PointerEvent) => { downRef.current = { x: e.clientX, y: e.clientY }; };
@@ -58,12 +53,12 @@ export function AppShots() {
     }
   };
 
-  const s = screens[active];
+  const s = screens[active] || screens[0];
   return (
     <section className="as" id="app">
       <Reveal as="div" className="as-head">
-        <div className="eyebrow">( App demo )</div>
-        <h2 className="display">The member app, screen by screen.</h2>
+        <div className="eyebrow">( {t.appShots.eyebrow} )</div>
+        <h2 className="display">{t.appShots.title}</h2>
       </Reveal>
       <div
         onMouseEnter={() => { hoverRef.current = true; }}

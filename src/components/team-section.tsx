@@ -1,36 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { TeamMember } from '../types';
-
-const originalMembers: TeamMember[] = [
-  {
-    id: '1',
-    name: 'Matyas Abera',
-    role: 'Co-Founder • Business Analyst',
-    image: '/maty.png'
-  },
-  {
-    id: '2',
-    name: 'Abenezer Kifle',
-    role: 'Founder • Full-Stack Developer',
-    image: '/abenezer.png'
-  },
-  {
-    id: '3',
-    name: 'Mulisa Tadesse',
-    role: 'Marketing Specialist',
-    image: '/mule.jpeg'
-  },
-  {
-    id: '4',
-    name: 'Sarah Mitchell',
-    role: 'Lead Consultant',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop'
-  }
-];
+import { useLanguage } from '@/lib/i18n';
 
 // Fallback images in case local files aren't in /public yet
 const fallbackAvatars: Record<string, string> = {
@@ -40,10 +14,42 @@ const fallbackAvatars: Record<string, string> = {
   '4': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop'
 };
 
-// Triplicate the array for seamless infinite looping
-const loopedMembers = [...originalMembers, ...originalMembers, ...originalMembers];
-
 export const TeamSection: React.FC = () => {
+  const { t } = useLanguage();
+
+  const originalMembers: TeamMember[] = useMemo(() => [
+    {
+      id: '1',
+      name: 'Matyas Abera',
+      role: t.team.roles.matyas,
+      image: '/maty.png'
+    },
+    {
+      id: '2',
+      name: 'Abenezer Kifle',
+      role: t.team.roles.abenezer,
+      image: '/abenezer.png'
+    },
+    {
+      id: '3',
+      name: 'Mulisa Tadesse',
+      role: t.team.roles.mulisa,
+      image: '/mule.jpeg'
+    },
+    {
+      id: '4',
+      name: 'Sarah Mitchell',
+      role: t.team.roles.sarah,
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop'
+    }
+  ], [t.team.roles]);
+
+  // Triplicate the array for seamless infinite looping
+  const loopedMembers = useMemo(
+    () => [...originalMembers, ...originalMembers, ...originalMembers],
+    [originalMembers]
+  );
+
   const [itemsVisible, setItemsVisible] = useState(4);
   const [currentIndex, setCurrentIndex] = useState(originalMembers.length);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -56,7 +62,7 @@ export const TeamSection: React.FC = () => {
       if (w < 640) setItemsVisible(1);
       else if (w < 768) setItemsVisible(2);
       else if (w < 1024) setItemsVisible(3);
-      else setItemsVisible(4); // Shows 4 cards as per screenshot
+      else setItemsVisible(4);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -74,7 +80,6 @@ export const TeamSection: React.FC = () => {
 
   const handleTransitionEnd = () => {
     setIsAnimating(false);
-    // Seamless jump
     if (currentIndex >= originalMembers.length * 2) {
       setCurrentIndex(currentIndex - originalMembers.length);
     } else if (currentIndex <= originalMembers.length - 1) {
@@ -92,8 +97,6 @@ export const TeamSection: React.FC = () => {
     autoPlayRef.current = setInterval(handleNext, 6000);
   };
 
-  // The translation percentage is relative to the items container
-  // Each item takes up (100 / itemsVisible)% of the viewport width.
   const itemWidthPercent = 100 / itemsVisible;
   const translateX = -(currentIndex * itemWidthPercent);
 
@@ -101,15 +104,15 @@ export const TeamSection: React.FC = () => {
     <section className="bg-white dark:bg-[#08090a] py-24 sm:py-32 overflow-hidden transition-colors" id="team">
       <div className="mx-auto max-w-[100rem] px-4 sm:px-6 lg:px-8">
         
-        {/* Header Section: Exact match for the screenshot */}
+        {/* Header Section */}
         <div className="text-center mb-16 space-y-6">
           <div className="flex items-center justify-center gap-2">
             <span className="w-10 h-[2px] bg-red-500"></span>
-            <span className="text-[10px] font-black text-red-600 tracking-[0.4em] uppercase">Our team</span>
+            <span className="text-[10px] font-black text-red-600 tracking-[0.4em] uppercase">{t.team.eyebrow}</span>
           </div>
           
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black text-gray-900 dark:text-white tracking-tight leading-[0.95] max-w-4xl mx-auto">
-            Meet the experts behind your <br className="hidden sm:block" /> business success
+            {t.team.title}
           </h2>
         </div>
 
@@ -131,7 +134,6 @@ export const TeamSection: React.FC = () => {
                 style={{ width: `${itemWidthPercent}%` }}
               >
                 <div className="relative h-[500px] sm:h-[600px] rounded-[2.5rem] overflow-hidden group bg-gray-100 dark:bg-gray-800 shadow-md transition-all duration-700">
-                  {/* Robust image rendering */}
                   <img
                     src={member.image}
                     alt={member.name}
@@ -167,7 +169,7 @@ export const TeamSection: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Navigation Controls: Matching the teal circle buttons from screenshot */}
+        {/* Navigation Controls */}
         <div className="flex flex-col items-center gap-12 mt-16">
           <div className="flex items-center gap-4">
             <button 
@@ -184,11 +186,6 @@ export const TeamSection: React.FC = () => {
             >
               <ArrowRight size={24} strokeWidth={2.5} />
             </button>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></span>
-            <span className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-[0.2em] uppercase">FAQ</span>
           </div>
         </div>
 

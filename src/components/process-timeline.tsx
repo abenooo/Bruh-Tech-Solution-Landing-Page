@@ -3,35 +3,10 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ProcessStep } from '../types';
-
-const steps: ProcessStep[] = [
-  {
-    id: '01',
-    number: '01',
-    title: 'Onboarding & Requirements',
-    description: 'We align your SACCO’s policies, products, and workflows with our ready-built fintech platform.'
-  },
-  {
-    id: '02',
-    number: '02',
-    title: 'Configuration',
-    description: 'We configure modules—members, savings, loans, and roles—to match how your SACCO operates.'
-  },
-  {
-    id: '03',
-    number: '03',
-    title: 'Deployment & Launch',
-    description: 'Your system is deployed, tested, and launched with secure access for staff and members.'
-  },
-  {
-    id: '04',
-    number: '04',
-    title: 'Support & Scale',
-    description: 'We provide ongoing support, compliance alignment, and scalability as your SACCO grows.'
-  }
-];
+import { useLanguage } from '@/lib/i18n';
 
 export const ProcessTimeline: React.FC = () => {
+  const { t } = useLanguage();
   const stepsContainerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: stepsContainerRef,
@@ -41,6 +16,8 @@ export const ProcessTimeline: React.FC = () => {
   const heightSpring = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const height = useTransform(heightSpring, [0, 1], ["0%", "100%"]);
 
+  const steps = t.process.steps;
+
   return (
     <section id="process" className="relative bg-[#FAFAFA] dark:bg-[#0c0d0e] py-16 sm:py-24 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,13 +25,13 @@ export const ProcessTimeline: React.FC = () => {
           <div className="lg:col-span-5 relative">
             <div className="sticky top-24 sm:top-32 z-30 mb-10 lg:mb-0">
               <div className="flex items-center gap-3 mb-6 sm:mb-8">
-                <span className="text-red-600 font-bold tracking-widest text-xs uppercase">// Process //</span>
+                <span className="text-red-600 font-bold tracking-widest text-xs uppercase">{t.process.tag}</span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-[1.1] mb-4">
-                A proven fintech process <br className="hidden sm:block"/> for SACCOs.
+                {t.process.title}
               </h2>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-md">
-                Codex Africa delivers a ready-to-use SACCO fintech platform—configured to your needs and launched fast.
+                {t.process.subhead}
               </p>
             </div>
           </div>

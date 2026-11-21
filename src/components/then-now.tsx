@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { Reveal } from "@/components/motion";
+import { useLanguage } from "@/lib/i18n";
 
 /*
  * Then / Now split: the old way of gathering and paying on the left
@@ -10,12 +11,12 @@ import { Reveal } from "@/components/motion";
  */
 
 export function ThenNow() {
+  const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    /* React doesn't always render the muted attribute — set it directly so autoplay is allowed */
     v.muted = true;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       v.pause();
@@ -28,13 +29,12 @@ export function ThenNow() {
     <section className="tn" id="then-now">
       <div className="container">
         <Reveal>
-          <div className="eyebrow">( Then → Now )</div>
+          <div className="eyebrow">{t.thenNow.eyebrow}</div>
           <h2 className="display" style={{ fontSize: "clamp(28px, 4.2vw, 50px)", maxWidth: 760, margin: "18px 0 0" }}>
-            The gathering is the same. The ledger isn&apos;t.
+            {t.thenNow.title}
           </h2>
           <p style={{ color: "var(--muted)", maxWidth: 560, lineHeight: 1.65, margin: "16px 0 0" }}>
-            For generations, members met under the tree, paid in cash, and trusted a locked box and
-            a paper book. The meeting stays. The box becomes a core.
+            {t.thenNow.desc}
           </p>
         </Reveal>
       </div>
@@ -51,25 +51,24 @@ export function ThenNow() {
             preload="metadata"
             aria-label="The modern way — paying digitally through the SACCO platform"
           />
-          <span className="tn-label">( The modern way )</span>
+          <span className="tn-label">( {t.thenNow.newTag} )</span>
           <div className="tn-chips">
-            <span className="tn-chip">Telebirr deposit in seconds</span>
-            <span className="tn-chip">Posted once, visible everywhere</span>
-            <span className="tn-chip">Reconciled to the birr, live</span>
+            {t.thenNow.newChips.map((chip, idx) => (
+              <span key={idx} className="tn-chip">{chip}</span>
+            ))}
           </div>
         </Reveal>
 
         <Reveal as="div" className="tn-card tn-old">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/then-old.webp" alt="Isometric village scene — the paper-era cooperative" />
-          <span className="tn-label">( The old way )</span>
+          <img src="/then-old.webp" alt="Traditional paper-era cooperative" />
+          <span className="tn-label">( {t.thenNow.oldTag} )</span>
           <div className="tn-chips">
-            <span className="tn-chip">Cash in a locked wooden box</span>
-            <span className="tn-chip">Paper passbooks, hand totals</span>
-            <span className="tn-chip">One meeting a month to reconcile</span>
+            {t.thenNow.oldChips.map((chip, idx) => (
+              <span key={idx} className="tn-chip">{chip}</span>
+            ))}
           </div>
         </Reveal>
-
 
         <span className="tn-arrow" aria-hidden>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">

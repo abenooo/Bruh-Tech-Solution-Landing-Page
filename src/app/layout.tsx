@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
-  title: "Bruh Tech Solution — Core banking for Ethiopia's cooperatives",
+  title: "Bruh Tech Solution — SACCO Core Banking (Local PC & Cloud)",
   description:
-    "The Ethio SACCO Platform digitizes Ethiopia's 23,000+ savings and credit cooperatives — membership, savings, loans, shares, accounting and payments on one audit-grade core. Built in Addis Ababa.",
+    "Bruh Tech Solution provides enterprise core banking software for Ethiopian SACCO cooperatives. Runs locally on branch office PCs (offline-resilient) and deploys in the secure cloud. Trusted by cooperatives including Maedot SACCO.",
   openGraph: {
-    title: "Bruh Tech Solution — Core banking for Ethiopia's cooperatives",
+    title: "Bruh Tech Solution — SACCO Core Banking (Local PC & Cloud)",
     description:
-      "One audit-grade core for membership, savings, loans, shares, accounting and payments. Built in Addis Ababa, ready for 23,000+ SACCOs.",
+      "Enterprise core banking engine for Ethiopian SACCO cooperatives. Installable locally on branch PCs or in the cloud. Built with Java 21, Spring Boot 3.3, 16-digit Fayda KYC verification, and 5-language localization.",
     type: "website",
   },
 };
@@ -26,7 +27,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased" suppressHydrationWarning>{children}</body>
+      <body className="antialiased" suppressHydrationWarning>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
