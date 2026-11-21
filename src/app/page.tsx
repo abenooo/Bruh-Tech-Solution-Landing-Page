@@ -8,7 +8,8 @@ import { MoneyAll } from "@/components/money-all";
 import { AppShots } from "@/components/app-shots";
 import { TeamTiles } from "@/components/data-sections";
 import { TeamsTabs } from "@/components/teams-tabs";
-import { ProcessSteps } from "@/components/process-steps";
+import { ProcessTimeline } from "@/components/process-timeline";
+import { TeamSection } from "@/components/team-section";
 import { ThenNow } from "@/components/then-now";
 import { Products } from "@/components/products";
 
@@ -23,8 +24,8 @@ export default function Home() {
       {/* hero — scroll-scrubbed video scene */}
       <MercuryHero />
 
-      {/* 5-step delivery process (Precept-style) */}
-      <ProcessSteps />
+      {/* 4-step fintech delivery process */}
+      <ProcessTimeline />
 
       {/* everything you do with money — pinned dark section */}
       <MoneyAll />
@@ -79,6 +80,9 @@ export default function Home() {
 
       {/* audience tabs (Nexura-style) */}
       <TeamsTabs />
+
+      {/* meet the experts team carousel */}
+      <TeamSection />
 
 
       {/* then / now — the old way vs the modern way */}
