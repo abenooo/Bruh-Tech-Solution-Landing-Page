@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 /*
  * Detail-page gallery: one large featured image with a grid of thumbnails
@@ -12,6 +13,7 @@ import { useState } from "react";
 const SLOTS = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export function ServiceGallery({ slug, title }: { slug: string; title: string }) {
+  const { t } = useLanguage();
   const [active, setActive] = useState(0);
   const [srcs, setSrcs] = useState<string[]>(
     SLOTS.map((n) => `/service-shots/${slug}-${n}.png`)
@@ -34,7 +36,7 @@ export function ServiceGallery({ slug, title }: { slug: string; title: string })
           <img
             key={srcs[active]}
             src={srcs[active]}
-            alt={`${title} — screenshot ${active + 1}`}
+            alt={`${title} — ${t.serviceGallery.screenshotAlt} ${active + 1}`}
             onError={() => fallback(active)}
           />
         </div>
@@ -43,7 +45,7 @@ export function ServiceGallery({ slug, title }: { slug: string; title: string })
             <button
               key={n}
               className={`sg-thumb ${i === active ? "on" : ""}`}
-              aria-label={`Show screenshot ${n}`}
+              aria-label={`${t.serviceGallery.ariaShow} ${n}`}
               aria-pressed={i === active}
               onClick={() => setActive(i)}
             >
@@ -54,7 +56,7 @@ export function ServiceGallery({ slug, title }: { slug: string; title: string })
         </div>
       </div>
       <p className="sg-note">
-        Placeholder imagery — replace with product screenshots at{" "}
+        {t.serviceGallery.note}{" "}
         <code>public/service-shots/{slug}-1.png … {slug}-8.png</code>
       </p>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 /*
  * Flow-style panel animations for the "Everything you do with money" section:
@@ -40,27 +41,29 @@ const CHART = "M0,46 C10,42 18,44 28,36 C38,28 46,32 56,24 C66,16 74,20 84,12 L1
 
 /* 1 — core banking overview */
 export function FlowCore() {
+  const { t } = useLanguage();
+  const f = t.flowMocks.core;
   return (
     <div className="fm">
       <aside className="fm-side" style={{ "--i": 0 } as React.CSSProperties}>
         <span className="dot" />
-        {["Dashboard", "Members", "Savings", "Loans", "Shares", "Reports"].map((x, i) => (
+        {f.nav.map((x, i) => (
           <i key={x} className={i === 0 ? "on" : ""}>{x}</i>
         ))}
       </aside>
       <div className="fm-main">
         <div className="fm-hero" style={{ "--i": 1 } as React.CSSProperties}>
-          <span>Total savings</span>
+          <span>{f.totalSavings}</span>
           <b><CountTick to={148.2 * 10} prefix="ETB " suffix="M" /></b>
-          <i className="up">▲ 12.4% this quarter</i>
+          <i className="up">{f.quarterGrowth}</i>
         </div>
         <div className="fm-row3">
-          <div className="fm-stat" style={{ "--i": 2 } as React.CSSProperties}><b>23,412</b><span>Members</span></div>
-          <div className="fm-stat" style={{ "--i": 3 } as React.CSSProperties}><b>8,540</b><span>Active loans</span></div>
-          <div className="fm-stat" style={{ "--i": 4 } as React.CSSProperties}><b>2.4%</b><span>PAR 30</span></div>
+          <div className="fm-stat" style={{ "--i": 2 } as React.CSSProperties}><b>23,412</b><span>{f.members}</span></div>
+          <div className="fm-stat" style={{ "--i": 3 } as React.CSSProperties}><b>8,540</b><span>{f.activeLoans}</span></div>
+          <div className="fm-stat" style={{ "--i": 4 } as React.CSSProperties}><b>2.4%</b><span>{f.par30}</span></div>
         </div>
         <div className="fm-chart" style={{ "--i": 5 } as React.CSSProperties}>
-          <span>Portfolio growth</span>
+          <span>{f.growth}</span>
           <svg viewBox="0 0 100 50" preserveAspectRatio="none">
             <path d={`${CHART} L100,50 L0,50 Z`} fill="rgba(63,162,117,0.14)" />
             <path className="fm-draw" pathLength="1" d={CHART} fill="none" stroke="#3FA275" strokeWidth="1.6" />
@@ -73,26 +76,28 @@ export function FlowCore() {
 
 /* 2 — teller & branch operations */
 export function FlowTeller() {
+  const { t } = useLanguage();
+  const f = t.flowMocks.teller;
   return (
     <div className="fm fm-col">
-      <div className="fm-title" style={{ "--i": 0 } as React.CSSProperties}>Teller queue — Adama branch</div>
+      <div className="fm-title" style={{ "--i": 0 } as React.CSSProperties}>{f.title}</div>
       {[
-        ["SV-1180 · Deposit", "ETB 4,500"],
-        ["LN-1902 · Repayment", "ETB 2,150"],
-        ["SH-0042 · 12 shares", "ETB 1,200"],
-      ].map(([t, v], i) => (
-        <div key={t} className="fm-qrow" style={{ "--i": i + 1 } as React.CSSProperties}>
-          <span>{t}</span>
+        [f.deposit, "ETB 4,500"],
+        [f.repayment, "ETB 2,150"],
+        [f.shares, "ETB 1,200"],
+      ].map(([title, v], i) => (
+        <div key={title} className="fm-qrow" style={{ "--i": i + 1 } as React.CSSProperties}>
+          <span>{title}</span>
           <b>{v}</b>
           <span className="fm-swap">
-            <i className="a">Post</i>
-            <i className="b">Posted ✓</i>
+            <i className="a">{f.post}</i>
+            <i className="b">{f.posted}</i>
           </span>
         </div>
       ))}
       <div className="fm-eod" style={{ "--i": 4 } as React.CSSProperties}>
-        <span>End-of-day close</span>
-        <b className="ok">Reconciled ✓ · 0 exceptions</b>
+        <span>{f.eod}</span>
+        <b className="ok">{f.reconciled}</b>
       </div>
     </div>
   );
@@ -100,12 +105,14 @@ export function FlowTeller() {
 
 /* 3 — payments & channels */
 export function FlowPay() {
+  const { t } = useLanguage();
+  const f = t.flowMocks.pay;
   return (
     <div className="fm fm-col fm-pay">
-      <div className="fm-title" style={{ "--i": 0 } as React.CSSProperties}>Channels — posted once</div>
+      <div className="fm-title" style={{ "--i": 0 } as React.CSSProperties}>{f.title}</div>
       <div className="fm-paygrid">
         <div className="fm-chs">
-          {["Telebirr", "CBE Birr", "USSD *889#"].map((c, i) => (
+          {f.channels.map((c, i) => (
             <div key={c} className="fm-ch" style={{ "--i": i + 1 } as React.CSSProperties}>{c}</div>
           ))}
         </div>
@@ -113,9 +120,9 @@ export function FlowPay() {
           <span className="fm-dot" />
         </div>
         <div className="fm-ledger" style={{ "--i": 5 } as React.CSSProperties}>
-          <span>One ledger</span>
-          <b>ETB 2.4M today</b>
-          <i className="ok">Reconciled live</i>
+          <span>{f.oneLedger}</span>
+          <b>{f.todayVol}</b>
+          <i className="ok">{f.live}</i>
         </div>
       </div>
     </div>
@@ -124,21 +131,23 @@ export function FlowPay() {
 
 /* 4 — reports & audit */
 export function FlowAudit() {
+  const { t } = useLanguage();
+  const f = t.flowMocks.audit;
   return (
     <div className="fm fm-col">
-      <div className="fm-title" style={{ "--i": 0 } as React.CSSProperties}>Reports & audit trail</div>
+      <div className="fm-title" style={{ "--i": 0 } as React.CSSProperties}>{f.title}</div>
       <div className="fm-row3">
-        <div className="fm-rep" style={{ "--i": 1 } as React.CSSProperties}><b>Monthly NBE pack</b><i className="ok">Generated</i></div>
-        <div className="fm-rep" style={{ "--i": 2 } as React.CSSProperties}><b>Dividend model</b><i className="ok">Generated</i></div>
-        <div className="fm-rep" style={{ "--i": 3 } as React.CSSProperties}><b>Branch P&L</b><i className="rev">Scheduled</i></div>
+        <div className="fm-rep" style={{ "--i": 1 } as React.CSSProperties}><b>{f.nbe}</b><i className="ok">{f.generated}</i></div>
+        <div className="fm-rep" style={{ "--i": 2 } as React.CSSProperties}><b>{f.dividend}</b><i className="ok">{f.generated}</i></div>
+        <div className="fm-rep" style={{ "--i": 3 } as React.CSSProperties}><b>{f.pl}</b><i className="rev">{f.scheduled}</i></div>
       </div>
       {[
-        "09:41 · Teller posted SV-1180 — signed",
-        "09:42 · Ledger entry LN-1902 — dual control",
-        "09:44 · Report pack sealed — hash recorded",
-      ].map((t, i) => (
-        <div key={t} className="fm-log" style={{ "--i": i + 4 } as React.CSSProperties}>
-          <em /> {t}
+        f.log1,
+        f.log2,
+        f.log3,
+      ].map((text, i) => (
+        <div key={text} className="fm-log" style={{ "--i": i + 4 } as React.CSSProperties}>
+          <em /> {text}
         </div>
       ))}
     </div>

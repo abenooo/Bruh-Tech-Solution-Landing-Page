@@ -49,7 +49,7 @@ export function ThenNow() {
             loop
             playsInline
             preload="metadata"
-            aria-label="The modern way — paying digitally through the SACCO platform"
+            aria-label={t.thenNow.modernAria}
           />
           <span className="tn-label">( {t.thenNow.newTag} )</span>
           <div className="tn-chips">
@@ -61,7 +61,7 @@ export function ThenNow() {
 
         <Reveal as="div" className="tn-card tn-old">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/then-old.webp" alt="Traditional paper-era cooperative" />
+          <img src="/then-old.webp" alt={t.thenNow.tradAlt} />
           <span className="tn-label">( {t.thenNow.oldTag} )</span>
           <div className="tn-chips">
             {t.thenNow.oldChips.map((chip, idx) => (

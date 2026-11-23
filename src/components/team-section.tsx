@@ -20,29 +20,29 @@ export const TeamSection: React.FC = () => {
   const originalMembers: TeamMember[] = useMemo(() => [
     {
       id: '1',
-      name: 'Matyas Abera',
+      name: t.team.names.matyas,
       role: t.team.roles.matyas,
       image: '/maty.png'
     },
     {
       id: '2',
-      name: 'Abenezer Kifle',
+      name: t.team.names.abenezer,
       role: t.team.roles.abenezer,
       image: '/abenezer.png'
     },
     {
       id: '3',
-      name: 'Mulisa Tadesse',
+      name: t.team.names.mulisa,
       role: t.team.roles.mulisa,
       image: '/mule.jpeg'
     },
     {
       id: '4',
-      name: 'Sarah Mitchell',
+      name: t.team.names.sarah,
       role: t.team.roles.sarah,
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop'
     }
-  ], [t.team.roles]);
+  ], [t.team.roles, t.team.names]);
 
   // Triplicate the array for seamless infinite looping
   const loopedMembers = useMemo(
@@ -101,17 +101,17 @@ export const TeamSection: React.FC = () => {
   const translateX = -(currentIndex * itemWidthPercent);
 
   return (
-    <section className="bg-white dark:bg-[#08090a] py-24 sm:py-32 overflow-hidden transition-colors" id="team">
+    <section className="bg-[var(--bg)] py-24 sm:py-32 overflow-hidden transition-colors" id="team">
       <div className="mx-auto max-w-[100rem] px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}
         <div className="text-center mb-16 space-y-6">
           <div className="flex items-center justify-center gap-2">
-            <span className="w-10 h-[2px] bg-red-500"></span>
-            <span className="text-[10px] font-black text-red-600 tracking-[0.4em] uppercase">{t.team.eyebrow}</span>
+            <span className="w-10 h-[2px] bg-[var(--gold)]"></span>
+            <span className="text-[10px] font-mono font-bold text-[var(--gold)] tracking-[0.4em] uppercase">{t.team.eyebrow}</span>
           </div>
           
-          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black text-gray-900 dark:text-white tracking-tight leading-[0.95] max-w-4xl mx-auto">
+          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-black text-[var(--cream)] tracking-tight leading-[0.95] max-w-4xl mx-auto">
             {t.team.title}
           </h2>
         </div>
@@ -133,7 +133,8 @@ export const TeamSection: React.FC = () => {
                 className="px-2.5 shrink-0"
                 style={{ width: `${itemWidthPercent}%` }}
               >
-                <div className="relative h-[500px] sm:h-[600px] rounded-[2.5rem] overflow-hidden group bg-gray-100 dark:bg-gray-800 shadow-md transition-all duration-700">
+                <div className="relative h-[500px] sm:h-[600px] rounded-[2.5rem] overflow-hidden group bg-[var(--panel)] border border-[var(--rule)] shadow-md transition-all duration-700">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={member.image}
                     alt={member.name}
@@ -174,15 +175,15 @@ export const TeamSection: React.FC = () => {
           <div className="flex items-center gap-4">
             <button 
               onClick={() => { handlePrev(); resetAutoPlay(); }}
-              className="w-14 h-14 rounded-full bg-black dark:bg-white/10 flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 shadow-xl hover:bg-red-600 dark:hover:bg-red-600 cursor-pointer"
-              aria-label="Previous team member"
+              className="w-14 h-14 rounded-full bg-[var(--panel)] border border-[var(--rule)] flex items-center justify-center text-[var(--cream)] transition-all hover:scale-105 active:scale-95 shadow-md hover:bg-[var(--gold)] hover:text-[#16211C] cursor-pointer"
+              aria-label={t.team.aria.prev}
             >
               <ArrowLeft size={24} strokeWidth={2.5} />
             </button>
             <button 
               onClick={() => { handleNext(); resetAutoPlay(); }}
-              className="w-14 h-14 rounded-full bg-black dark:bg-white/10 flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 shadow-xl hover:bg-red-600 dark:hover:bg-red-600 cursor-pointer"
-              aria-label="Next team member"
+              className="w-14 h-14 rounded-full bg-[var(--panel)] border border-[var(--rule)] flex items-center justify-center text-[var(--cream)] transition-all hover:scale-105 active:scale-95 shadow-md hover:bg-[var(--gold)] hover:text-[#16211C] cursor-pointer"
+              aria-label={t.team.aria.next}
             >
               <ArrowRight size={24} strokeWidth={2.5} />
             </button>

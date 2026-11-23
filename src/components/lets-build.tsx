@@ -106,7 +106,7 @@ export function LetsBuild() {
   );
 
   return (
-    <section className="lb-wrap" ref={wrapRef} aria-label="Let's build">
+    <section className="lb-wrap" ref={wrapRef} aria-label={`${t.letsBuild.left} ${t.letsBuild.right}`}>
       <div className="lb-sticky">
         <div>
           <div className="lb-title-box">

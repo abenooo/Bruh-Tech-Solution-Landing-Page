@@ -1,27 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+import { useLanguage } from "@/lib/i18n";
 
-/*
- * Telegram-style theme switch: toggling sweeps a circle out from the button
- * (top-right) across the page to the bottom-left, revealing the other theme.
- * Uses the View Transitions API where available; falls back to an instant
- * swap elsewhere. Preference persists in localStorage ("theme").
- */
+function subscribe(callback: () => void) {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
+function getSnapshot() {
+  return document.documentElement.classList.contains("dark");
+}
+function getServerSnapshot() {
+  return false;
+}
 
 export function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
+  const { t } = useLanguage();
+  const dark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const toggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     const next = !dark;
     const apply = () => {
       document.documentElement.classList.toggle("dark", next);
       try { localStorage.setItem("theme", next ? "dark" : "light"); } catch {}
-      setDark(next);
     };
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -47,7 +49,7 @@ export function ThemeToggle() {
   };
 
   return (
-    <button className="nb-theme" aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} onClick={toggle}>
+    <button className="nb-theme" aria-label={dark ? t.common.themeLight : t.common.themeDark} onClick={toggle}>
       {dark ? (
         /* sun */
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>

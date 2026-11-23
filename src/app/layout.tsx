@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* restore the saved theme before first paint to avoid a flash */}
-        <script
+        {/* restore the saved theme and language before first paint to avoid a flash */}
+        <Script
+          id="restore-theme-lang"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}`,
+            __html: `try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}var l=localStorage.getItem('bruhtech_lang');if(l){document.documentElement.setAttribute('lang',l);}}catch(e){}`,
           }}
         />
       </head>

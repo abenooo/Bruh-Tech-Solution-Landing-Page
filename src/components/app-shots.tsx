@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { Reveal } from "@/components/motion";
 import { useLanguage } from "@/lib/i18n";
 
@@ -19,16 +19,21 @@ export function AppShots() {
     { src: "/app-screens/shot-5.png", t: t.appShots.s5.t, d: t.appShots.s5.d },
   ], [t.appShots]);
 
-  const go = (i: number) => {
-    touchedRef.current = Date.now();
+  /** Mark the last manual interaction timestamp (monotonic counter). */
+  const stamp = useCallback(() => { touchedRef.current = Date.now(); }, []);
+
+  const go = useCallback((i: number) => {
+    stamp();
     setPair(([a]) => (i === a ? [a, -1] : [((i % screens.length) + screens.length) % screens.length, a]));
-  };
-  const next = () => setPairManual(1);
-  const back = () => setPairManual(-1);
-  const setPairManual = (dir: number) => {
-    touchedRef.current = Date.now();
+  }, [screens.length, stamp]);
+
+  const setPairManual = useCallback((dir: number) => {
+    stamp();
     setPair(([a]) => [(a + dir + screens.length) % screens.length, a]);
-  };
+  }, [screens.length, stamp]);
+
+  const next = useCallback(() => setPairManual(1), [setPairManual]);
+  const back = useCallback(() => setPairManual(-1), [setPairManual]);
 
   /* moves by itself — pauses on hover and right after manual control */
   useEffect(() => {
@@ -74,7 +79,7 @@ export function AppShots() {
                 <img
                   key={x.src}
                   src={x.src}
-                  alt={`Member app — ${x.t}`}
+                  alt={`${t.nav.brand} — ${x.t}`}
                   draggable={false}
                   className={i === active ? "on" : i === prev ? "was" : ""}
                 />
@@ -89,8 +94,8 @@ export function AppShots() {
         </div>
       </Reveal>
       </div>
-      <div className="asc-dots" role="tablist" aria-label="App screens">
-        <button className="asc-arrow" aria-label="Previous screen" onClick={back}>‹</button>
+      <div className="asc-dots" role="tablist" aria-label={t.common.appScreens}>
+        <button className="asc-arrow" aria-label={t.common.prevScreen} onClick={back}>‹</button>
         {screens.map((x, i) => (
           <button
             key={x.src}
@@ -101,7 +106,7 @@ export function AppShots() {
             onClick={() => go(i)}
           />
         ))}
-        <button className="asc-arrow" aria-label="Next screen" onClick={next}>›</button>
+        <button className="asc-arrow" aria-label={t.common.nextScreen} onClick={next}>›</button>
       </div>
     </section>
   );

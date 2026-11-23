@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Reveal } from "@/components/motion";
+import { useLanguage } from "@/lib/i18n";
 
 /*
  * Nexura-style audience section: centered heading, a plain-text scrollspy
@@ -13,17 +14,10 @@ import { Reveal } from "@/components/motion";
 
 /* --- visual 1: auto-scrolling channel feed --- */
 
-const feedCards = [
-  { icon: "₸", tint: "#E8F4EC", t: "Telebirr", d: "Deposit confirmed · ETB 4,500" },
-  { icon: "◍", tint: "#FDF3DC", t: "ROI on savings", d: "8.2% dividend capacity this year" },
-  { icon: "🏦", tint: "#EAF0FA", t: "CBE Birr", d: "142 postings reconciled today" },
-  { icon: "#", tint: "#F4EAFA", t: "USSD", d: "38 member sessions live now" },
-  { icon: "⚡", tint: "#FDF3DC", t: "Top branch", d: "Adama leading deposits this week" },
-  { icon: "∞", tint: "#EAF0FA", t: "Passbook sync", d: "Every channel, updated once" },
-];
-
 function AutoFeed() {
+  const { t } = useLanguage();
   const trackRef = useRef<HTMLDivElement>(null);
+  const feedCards = t.teamsTabsMocks.feed;
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -33,9 +27,9 @@ function AutoFeed() {
     let off = 0;
     let raf = 0;
     let last = performance.now();
-    const tick = (t: number) => {
-      const dt = Math.min(50, t - last);
-      last = t;
+    const tick = (tStamp: number) => {
+      const dt = Math.min(50, tStamp - last);
+      last = tStamp;
       off += dt * 0.022; /* ~22px per second */
       const half = track.scrollHeight / 2;
       if (half > 0 && off >= half) off -= half;
@@ -78,9 +72,11 @@ function AutoFeed() {
 /* --- visual 2: workflow diagram --- */
 
 function Workflow() {
+  const { t } = useLanguage();
+  const wf = t.teamsTabsMocks.workflow;
   return (
     <div className="wf">
-      <div className="wf-pill"><b>Loan LN-2039</b><span>Input</span></div>
+      <div className="wf-pill"><b>{wf.loan}</b><span>{wf.input}</span></div>
       <span className="wf-line" />
       <span className="wf-core">
         <svg width="26" height="26" viewBox="0 0 100 100" fill="currentColor" aria-hidden>
@@ -90,7 +86,7 @@ function Workflow() {
         </svg>
       </span>
       <span className="wf-line" />
-      <div className="wf-pill out"><b>Disbursement</b><span>Signed 3/3</span></div>
+      <div className="wf-pill out"><b>{wf.disbursement}</b><span>{wf.signed}</span></div>
     </div>
   );
 }
@@ -98,11 +94,13 @@ function Workflow() {
 /* --- visual 3: tilted analytics cards --- */
 
 function TiltCards() {
+  const { t } = useLanguage();
+  const an = t.teamsTabsMocks.analytics;
   return (
     <div className="tilt">
       <div className="tilt-card back">
-        <b>Branch mix</b>
-        <i>April 2026</i>
+        <b>{an.branchMix}</b>
+        <i>{an.month}</i>
         <svg viewBox="0 0 42 42" className="donut" aria-hidden>
           <circle cx="21" cy="21" r="15.9" fill="none" stroke="#F0E4CC" strokeWidth="7" />
           <circle className="seg-gold" cx="21" cy="21" r="15.9" fill="none" stroke="#E8B54A" strokeWidth="7"
@@ -112,8 +110,8 @@ function TiltCards() {
         </svg>
       </div>
       <div className="tilt-card front">
-        <b>Savings trend</b>
-        <i>Last 6 months</i>
+        <b>{an.savingsTrend}</b>
+        <i>{an.timeframe}</i>
         <svg viewBox="0 0 100 44" preserveAspectRatio="none" aria-hidden>
           <path d="M0,40 C12,36 20,38 30,30 C40,22 48,26 58,20 C68,14 78,18 88,10 L100,6 L100,44 L0,44 Z"
             fill="rgba(63, 162, 117, 0.16)" />
@@ -128,32 +126,33 @@ function TiltCards() {
 
 /* --- the section --- */
 
-const groups = [
-  {
-    id: "team-tellers",
-    tab: "For branch tellers",
-    h: "Stop re-keying entries across systems.",
-    d: "The core connects every channel — teller, Telebirr, CBE, USSD — and posts each transaction once, everywhere.",
-    visual: <AutoFeed />,
-  },
-  {
-    id: "team-committees",
-    tab: "For loan committees",
-    h: "Do more with a lean credit committee.",
-    d: "Set your approval chains once and let the workflow route, remind and record every signature in the audit trail.",
-    visual: <Workflow />,
-  },
-  {
-    id: "team-executives",
-    tab: "For executives",
-    h: "Manage every branch from one intelligent core.",
-    d: "Trend flags and scheduled regulator packs, delivered without the manual overhead.",
-    visual: <TiltCards />,
-  },
-];
-
 export function TeamsTabs() {
+  const { t } = useLanguage();
   const [active, setActive] = useState(0);
+
+  const groups = useMemo(() => [
+    {
+      id: "team-tellers",
+      tab: t.teamsTabs.tellers.tab,
+      h: t.teamsTabs.tellers.h,
+      d: t.teamsTabs.tellers.d,
+      visual: <AutoFeed />,
+    },
+    {
+      id: "team-committees",
+      tab: t.teamsTabs.committees.tab,
+      h: t.teamsTabs.committees.h,
+      d: t.teamsTabs.committees.d,
+      visual: <Workflow />,
+    },
+    {
+      id: "team-executives",
+      tab: t.teamsTabs.executives.tab,
+      h: t.teamsTabs.executives.h,
+      d: t.teamsTabs.executives.d,
+      visual: <TiltCards />,
+    },
+  ], [t.teamsTabs]);
 
   useEffect(() => {
     const panels = groups
@@ -172,13 +171,13 @@ export function TeamsTabs() {
     );
     panels.forEach((p) => io.observe(p));
     return () => io.disconnect();
-  }, []);
+  }, [groups]);
 
   return (
     <section className="tabs">
       <Reveal as="div" className="tabs-head container">
-        <h2 className="display">Built for every SACCO team.</h2>
-        <p>Whether you run one branch or a federation, the platform adapts to the way your people work.</p>
+        <h2 className="display">{t.teamsTabs.title}</h2>
+        <p>{t.teamsTabs.subhead}</p>
       </Reveal>
       <div className="tabs-body container">
         <nav className="tabs-rail" aria-label="Teams">

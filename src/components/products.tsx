@@ -43,32 +43,34 @@ const products = [
 ];
 
 function MobileVisual() {
+  const { t } = useLanguage();
+  const m = t.productMocks.mobile;
   return (
     <div className="phone pr-phone" aria-hidden>
       <div className="phone-notch" />
       <div className="phone-screen">
         <div className="app-track pr-cascade">
           <div className="app-head" style={{ "--i": 0 } as React.CSSProperties}>
-            <span className="hello">Selam, Meseret 👋</span><span className="bell" />
+            <span className="hello">{m.greeting}</span><span className="bell" />
           </div>
           <div className="app-balance" style={{ "--i": 1 } as React.CSSProperties}>
-            <span>Total savings</span>
+            <span>{m.totalSavings}</span>
             <b>ETB 12,480.50</b>
-            <i>Passbook SV-1180 · Updated just now</i>
+            <i>{m.passbookNotice}</i>
           </div>
           <div className="app-actions" style={{ "--i": 2 } as React.CSSProperties}>
-            {["Deposit", "Withdraw", "Loan", "Shares"].map((a) => (
+            {m.actions.map((a) => (
               <span key={a}><em /> {a}</span>
             ))}
           </div>
           <div className="app-goal" style={{ "--i": 3 } as React.CSSProperties}>
-            <div className="g-top"><span>Ox-fattening goal</span><b>80%</b></div>
+            <div className="g-top"><span>{m.goalTitle}</span><b>80%</b></div>
             <div className="g-bar"><i style={{ width: "80%" }} /></div>
           </div>
           <div className="app-list" style={{ "--i": 4 } as React.CSSProperties}>
-            {[["Deposit — Telebirr", "+ 500.00"], ["Loan repayment", "− 850.00"]].map(([t, v], j) => (
-              <div key={t} className="a-row" style={{ "--i": 5 + j } as React.CSSProperties}>
-                <span>{t}</span><b className={v.startsWith("+") ? "pos" : ""}>{v}</b>
+            {[[m.depositItem, "+ 500.00"], [m.loanRepayItem, "− 850.00"]].map(([title, v], j) => (
+              <div key={title} className="a-row" style={{ "--i": 5 + j } as React.CSSProperties}>
+                <span>{title}</span><b className={v.startsWith("+") ? "pos" : ""}>{v}</b>
               </div>
             ))}
           </div>
@@ -79,15 +81,17 @@ function MobileVisual() {
 }
 
 function UssdVisual() {
+  const { t } = useLanguage();
+  const u = t.productMocks.ussd;
   return (
     <div className="phone pr-phone" aria-hidden>
       <div className="phone-notch" />
       <div className="phone-screen ussd">
-        <div className="ussd-head">*889# · Maedot SACCO</div>
-        {["1. Balance inquiry", "2. Deposit (Telebirr)", "3. Withdraw", "4. Transfer to member", "5. Loan status", "6. Buy shares", "7. Mini statement", "0. Help"].map((l, i) => (
+        <div className="ussd-head">{u.head}</div>
+        {u.menu.map((l, i) => (
           <div key={l} className="ussd-line" style={{ "--i": i } as React.CSSProperties}>{l}</div>
         ))}
-        <div className="ussd-reply">Reply: 1<i className="caret" /></div>
+        <div className="ussd-reply">{u.reply}<i className="caret" /></div>
       </div>
     </div>
   );
@@ -113,6 +117,7 @@ export function Products() {
       t: t.products.p1.title,
       d: t.products.p1.desc,
       more: t.products.p1.more,
+      chips: t.products.p1.chips || products[0].chips,
     },
     {
       ...products[1],
@@ -120,6 +125,7 @@ export function Products() {
       t: t.products.p2.title,
       d: t.products.p2.desc,
       more: t.products.p2.more,
+      chips: t.products.p2.chips || products[1].chips,
     },
     {
       ...products[2],
@@ -127,6 +133,7 @@ export function Products() {
       t: t.products.p3.title,
       d: t.products.p3.desc,
       more: t.products.p3.more,
+      chips: t.products.p3.chips || products[2].chips,
     },
   ];
 
@@ -146,9 +153,9 @@ export function Products() {
       onMouseLeave={() => { hoverRef.current = false; }}
     >
       <Reveal as="div" className="pr-head container">
-        <div className="eyebrow">{t.modules.eyebrow}</div>
+        <div className="eyebrow">{t.products.eyebrow}</div>
         <h2 className="display">{t.products.title}</h2>
-        <p>{t.products.p1.desc}</p>
+        <p>{t.products.subhead}</p>
       </Reveal>
 
       <div className="pr-stage container">

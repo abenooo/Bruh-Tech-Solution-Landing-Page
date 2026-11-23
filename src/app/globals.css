@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   /* light theme: warm gray ground, ink-green foreground; the cinematic
@@ -66,6 +67,16 @@ html.dark .tilt-card b { color: #F6EFE3; }
 html.dark .tilt-card i { color: rgba(246, 239, 227, 0.5); }
 html.dark .donut circle:first-of-type { stroke: rgba(246, 239, 227, 0.14); }
 html.dark .gl-team .t-row2 { background: rgba(246, 239, 227, 0.12); color: #F6EFE3; }
+html.dark .glass { background: rgba(22, 33, 28, 0.76); border-color: rgba(246, 239, 227, 0.18); color: #F6EFE3; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45); }
+html.dark .glass b { color: #F6EFE3; }
+html.dark .glass span { color: #9DB3A7; }
+html.dark .glass .caret { background: #F6EFE3; }
+html.dark .gl-stat .pos { color: #3FA275; }
+html.dark .gl-rep .ok { color: #3FA275; background: rgba(63, 162, 117, 0.22); }
+html.dark .gl-rep .rev { color: #E8B54A; background: rgba(232, 181, 74, 0.2); }
+html.dark .gl-team .av { border-color: rgba(22, 33, 28, 0.8); }
+html.dark .tt-arrows button { background: #1D2B25; border-color: rgba(246, 239, 227, 0.18); color: #F6EFE3; }
+html.dark .tt-arrows button:hover { background: #2a3d33; }
 
 /* dark islands — cinematic sections keep the original ink-green world */
 .ma-vis, .ps-sticky, .mh-sticky {

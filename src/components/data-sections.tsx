@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { Reveal } from "@/components/motion";
+import { useLanguage } from "@/lib/i18n";
 
 /*
  * TeamTiles — "Built to work the way your team thinks": a self-drifting
@@ -32,101 +33,103 @@ function CountLoop() {
 }
 
 /* typing prompt that cycles through questions */
-const QUESTIONS = ["Which branch grew fastest?", "Compare Q1 and Q2 deposits", "Who is behind on repayments?"];
-function TypeLine() {
+const DEFAULT_QUESTIONS = ["Which branch grew fastest?", "Compare Q1 and Q2 deposits", "Who is behind on repayments?"];
+function TypeLine({ questions = DEFAULT_QUESTIONS }: { questions?: string[] }) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const list = questions.length ? questions : DEFAULT_QUESTIONS;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.textContent = QUESTIONS[0];
+      el.textContent = list[0];
       return;
     }
     let q = 0;
     let n = 0;
     let hold = 0;
     const id = setInterval(() => {
-      const full = QUESTIONS[q];
+      const full = list[q % list.length];
       if (n < full.length) {
         n++;
         el.textContent = full.slice(0, n);
       } else if (++hold > 22) {
         hold = 0;
         n = 0;
-        q = (q + 1) % QUESTIONS.length;
+        q = (q + 1) % list.length;
         el.textContent = "";
       }
     }, 65);
     return () => clearInterval(id);
-  }, []);
+  }, [questions]);
   return <span className="tl-text" ref={ref} />;
 }
 
-const tiles = [
-  {
-    t: "Real-time dashboards",
-    d: "Branch and portfolio dashboards that update the moment a teller posts — no stale numbers in committee.",
-    hue: "linear-gradient(165deg, #A9C3B4 0%, #6FA287 42%, #23392F 100%)",
-    card: (
-      <div className="glass gl-stat">
-        <span>Active members</span>
-        <b><CountLoop /></b>
-        <i className="pos">+4.7%</i>
-      </div>
-    ),
-  },
-  {
-    t: "AI assistant",
-    d: "Ask a question in plain language and get the ledger's answer, with the report behind it.",
-    hue: "linear-gradient(160deg, #D9C89A 0%, #B98F45 48%, #2B2417 100%)",
-    card: (
-      <div className="glass gl-chat">
-        <span className="q">✦ <TypeLine /><i className="caret" /></span>
-        <span className="foot">🖇 Add attachment</span>
-      </div>
-    ),
-  },
-  {
-    t: "One-click reports",
-    d: "Regulator and committee packs generated, stamped and shared in seconds — not the night before.",
-    hue: "linear-gradient(150deg, #B9C7BE 0%, #7E9B8C 45%, #1D2B25 100%)",
-    card: (
-      <div className="glass gl-rep">
-        <span className="head">Recent reports</span>
-        <div className="r-row"><span>Monthly NBE pack</span><i className="ok">Completed</i></div>
-        <div className="r-row"><span>Dividend forecast</span><i className="rev">In review</i></div>
-      </div>
-    ),
-  },
-  {
-    t: "Smart alerts",
-    d: "Get flagged the moment something unusual happens — a PAR spike, a stalled approval, a branch gone quiet.",
-    hue: "linear-gradient(155deg, #D8B49A 0%, #C9603B 55%, #2A1D15 100%)",
-    card: (
-      <div className="glass gl-alert">
-        <span className="bell">🔔</span>
-        <span>PAR 30 rose 0.6% in Adama<br />— review 4 loans</span>
-      </div>
-    ),
-  },
-  {
-    t: "Team collaboration",
-    d: "Branches, committees and auditors work from the same ledger — share views, comment, assign follow-ups.",
-    hue: "linear-gradient(160deg, #9DB3A7 0%, #52796B 50%, #16211C 100%)",
-    card: (
-      <div className="glass gl-team">
-        {[["Branches", "+12"], ["Credit committee", "+3"], ["Auditors", "+1"]].map(([t2, n]) => (
-          <div key={t2} className="t-row2"><span>{t2}</span><span className="avs"><em className="av a1" /><em className="av a2" /><i>{n}</i></span></div>
-        ))}
-      </div>
-    ),
-  },
-];
-
 export function TeamTiles() {
+  const { t } = useLanguage();
   const trackRef = useRef<HTMLDivElement>(null);
   const hoverRef = useRef(false);
   const pendingRef = useRef(0);
+
+  const tiles = useMemo(() => [
+    {
+      t: t.teamTiles.d1_title,
+      d: t.teamTiles.d1_desc,
+      hue: "linear-gradient(165deg, #A9C3B4 0%, #6FA287 42%, #23392F 100%)",
+      card: (
+        <div className="glass gl-stat">
+          <span>{t.teamTiles.cards.activeMembers}</span>
+          <b><CountLoop /></b>
+          <i className="pos">+4.7%</i>
+        </div>
+      ),
+    },
+    {
+      t: t.teamTiles.d2_title,
+      d: t.teamTiles.d2_desc,
+      hue: "linear-gradient(160deg, #D9C89A 0%, #B98F45 48%, #2B2417 100%)",
+      card: (
+        <div className="glass gl-chat">
+          <span className="q">✦ <TypeLine questions={t.teamTiles.questions} /><i className="caret" /></span>
+          <span className="foot">🖇 Bruh Tech AI</span>
+        </div>
+      ),
+    },
+    {
+      t: t.teamTiles.d3_title,
+      d: t.teamTiles.d3_desc,
+      hue: "linear-gradient(150deg, #B9C7BE 0%, #7E9B8C 45%, #1D2B25 100%)",
+      card: (
+        <div className="glass gl-rep">
+          <span className="head">{t.teamTiles.cards.recentReports}</span>
+          <div className="r-row"><span>{t.teamTiles.cards.nbePack}</span><i className="ok">{t.teamTiles.cards.completed}</i></div>
+          <div className="r-row"><span>{t.teamTiles.cards.dividendForecast}</span><i className="rev">{t.teamTiles.cards.inReview}</i></div>
+        </div>
+      ),
+    },
+    {
+      t: t.teamTiles.d4_title,
+      d: t.teamTiles.d4_desc,
+      hue: "linear-gradient(155deg, #D8B49A 0%, #C9603B 55%, #2A1D15 100%)",
+      card: (
+        <div className="glass gl-alert">
+          <span className="bell">🔔</span>
+          <span>{t.teamTiles.cards.alertMsg}</span>
+        </div>
+      ),
+    },
+    {
+      t: t.teamTiles.d5_title,
+      d: t.teamTiles.d5_desc,
+      hue: "linear-gradient(160deg, #9DB3A7 0%, #52796B 50%, #16211C 100%)",
+      card: (
+        <div className="glass gl-team">
+          {[[t.teamTiles.cards.branches, "+12"], [t.teamTiles.cards.creditCommittee, "+3"], [t.teamTiles.cards.auditors, "+1"]].map(([t2, n]) => (
+            <div key={t2} className="t-row2"><span>{t2}</span><span className="avs"><em className="av a1" /><em className="av a2" /><i>{n}</i></span></div>
+          ))}
+        </div>
+      ),
+    },
+  ], [t.teamTiles]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -164,11 +167,11 @@ export function TeamTiles() {
     <section className="tt">
       <div className="container tt-head">
         <Reveal as="div">
-          <h2 className="display">Built to work the way<br />your team thinks</h2>
+          <h2 className="display">{t.teamTiles.title}</h2>
         </Reveal>
         <div className="tt-arrows">
-          <button onClick={() => nudge(-1)} aria-label="Previous">‹</button>
-          <button onClick={() => nudge(1)} aria-label="Next">›</button>
+          <button onClick={() => nudge(-1)} aria-label={t.common.prev}>‹</button>
+          <button onClick={() => nudge(1)} aria-label={t.common.next}>›</button>
         </div>
       </div>
       <div

@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { Reveal } from "@/components/motion";
-import { services } from "@/lib/services";
 import { useLanguage } from "@/lib/i18n";
+import { getLocalizedServices } from "@/lib/i18n-modules";
 
 export function ModulesSection() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const localizedServices = getLocalizedServices(language);
 
   return (
     <section id="modules" style={{ padding: "10vh 0 6vh" }}>
@@ -23,7 +24,7 @@ export function ModulesSection() {
       </div>
       <Reveal as="div">
         <ul className="svc-list">
-          {services.map((m) => (
+          {localizedServices.map((m) => (
             <li key={m.slug}>
               <Link className="svc-row" href={`/services/${m.slug}`}>
                 <span className="left">

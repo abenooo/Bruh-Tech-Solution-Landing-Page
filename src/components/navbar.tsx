@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useLanguage, LANGUAGES, Language } from "@/lib/i18n";
+import { useLanguage, LANGUAGES } from "@/lib/i18n";
 
 /*
  * Floating pill navbar: fixed, centered and always solid white with a
@@ -30,7 +31,7 @@ export function Navbar() {
   const { t, language, setLanguage, currentLanguageInfo } = useLanguage();
   const [open, setOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
   const [active, setActive] = useState<string | null>(null);
   const langDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -47,10 +48,6 @@ export function Navbar() {
   ];
 
   const sectionIds = links.map((l) => l.href.split("#")[1]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   /* Close language dropdown when clicking outside */
   useEffect(() => {
@@ -90,7 +87,7 @@ export function Navbar() {
   return (
     <header className="nb-fix">
       <nav className={`nb nb-solid ${mounted ? "nb-in" : ""}`}>
-        <a className="nb-logo" href="/" aria-label={`${t.nav.brand} home`}>
+        <Link className="nb-logo" href="/" aria-label={t.nav.brand}>
           <span className="nb-mark" aria-hidden>
             <svg width="18" height="18" viewBox="0 0 100 100" fill="currentColor">
               <rect x="14" y="14" width="30" height="30" rx="9" />
@@ -100,7 +97,7 @@ export function Navbar() {
             </svg>
           </span>
           <span className="nb-name">{t.nav.brand}</span>
-        </a>
+        </Link>
 
         <div className="nb-links">
           {links.map((l) => (
@@ -121,7 +118,7 @@ export function Navbar() {
             <button
               onClick={() => setLangMenuOpen((prev) => !prev)}
               className="flex items-center gap-1.5 h-11 px-3 rounded-full border border-[rgba(27,36,31,0.2)] dark:border-[rgba(246,239,227,0.25)] text-[#1B241F] dark:text-[#F6EFE3] hover:bg-black/5 dark:hover:bg-white/5 transition-all text-xs font-semibold cursor-pointer"
-              aria-label="Select language"
+              aria-label={t.common.selectLanguage}
               aria-expanded={langMenuOpen}
             >
               <GlobeIcon />
@@ -132,9 +129,9 @@ export function Navbar() {
             </button>
 
             {langMenuOpen && (
-              <div className="absolute right-0 top-13 mt-1 w-48 py-1.5 bg-white dark:bg-[#141618] rounded-2xl shadow-xl border border-gray-200 dark:border-white/10 z-50 overflow-hidden backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
-                <div className="px-3 py-1.5 text-[10px] uppercase font-bold tracking-wider text-gray-400 dark:text-gray-500 border-b border-gray-100 dark:border-white/5">
-                  Languages / ቋንቋዎች
+              <div className="absolute right-0 top-13 mt-1 w-48 py-1.5 bg-white dark:bg-[#1D2B25] rounded-2xl shadow-xl border border-gray-200 dark:border-[rgba(246,239,227,0.14)] z-50 overflow-hidden backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3 py-1.5 text-[10px] uppercase font-bold tracking-wider text-gray-400 dark:text-[rgba(246,239,227,0.5)] border-b border-gray-100 dark:border-white/5">
+                  {t.common.languagesHeader}
                 </div>
                 {LANGUAGES.map((item) => (
                   <button
@@ -145,13 +142,13 @@ export function Navbar() {
                     }}
                     className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs text-left transition-colors cursor-pointer ${
                       language === item.code
-                        ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold"
-                        : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5"
+                        ? "bg-amber-500/10 text-amber-700 dark:text-[#E8B54A] font-bold"
+                        : "text-gray-700 dark:text-[#F6EFE3] hover:bg-gray-100 dark:hover:bg-white/5"
                     }`}
                   >
                     <span className="flex flex-col">
                       <span className="font-medium">{item.nativeName}</span>
-                      <span className="text-[10px] text-gray-400 dark:text-gray-500">{item.name}</span>
+                      <span className="text-[10px] text-gray-400 dark:text-[rgba(246,239,227,0.5)]">{item.name}</span>
                     </span>
                     {language === item.code && (
                       <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
@@ -164,10 +161,10 @@ export function Navbar() {
 
           <ThemeToggle />
 
-          <a className="nb-cta" href="/#contact">
+          <Link className="nb-cta" href="/#contact">
             <span>{t.nav.requestDemo}</span>
             <Arrow />
-          </a>
+          </Link>
 
           <button className="nb-burger" aria-label="Toggle menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
@@ -210,10 +207,10 @@ export function Navbar() {
         {links.map((l) => (
           <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
         ))}
-        <a className="nb-cta nb-cta-menu" href="/#contact" onClick={() => setOpen(false)}>
+        <Link className="nb-cta nb-cta-menu" href="/#contact" onClick={() => setOpen(false)}>
           <span>{t.nav.requestDemo}</span>
           <Arrow />
-        </a>
+        </Link>
       </div>
     </header>
   );
