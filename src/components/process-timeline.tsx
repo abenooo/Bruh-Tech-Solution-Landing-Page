@@ -25,9 +25,9 @@ export const ProcessTimeline: React.FC = () => {
           <div className="lg:col-span-5 relative">
             <div className="sticky top-24 sm:top-32 z-30 mb-10 lg:mb-0">
               <div className="flex items-center gap-3 mb-6 sm:mb-8">
-                <span className="text-[var(--gold)] font-mono font-bold tracking-widest text-xs uppercase">{t.process.tag}</span>
+                <span className="text-[var(--gold)] font-mono font-semibold tracking-[0.16em] text-xs uppercase">{t.process.tag}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--cream)] tracking-tight leading-[1.1] mb-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[var(--cream)] tracking-tight leading-[1.16] mb-4">
                 {t.process.title}
               </h2>
               <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed max-w-md">
@@ -71,7 +71,7 @@ const TimelineStep: React.FC<{ step: ProcessStep; index: number }> = ({ step }) 
       </div>
       <div className="flex-grow">
         <div className="bg-[var(--panel)] p-6 sm:p-10 rounded-[1.5rem] sm:rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-500 border border-[var(--rule)]">
-            <h3 className="text-lg sm:text-2xl font-bold text-[var(--cream)] mb-2 sm:mb-3 tracking-tight">{step.title}</h3>
+            <h3 className="text-lg sm:text-2xl font-serif font-semibold text-[var(--cream)] mb-2 sm:mb-3 tracking-tight">{step.title}</h3>
             <p className="text-sm sm:text-lg text-[var(--muted)] leading-relaxed">{step.description}</p>
         </div>
       </div>

@@ -108,10 +108,10 @@ export const TeamSection: React.FC = () => {
         <div className="text-center mb-16 space-y-6">
           <div className="flex items-center justify-center gap-2">
             <span className="w-10 h-[2px] bg-[var(--gold)]"></span>
-            <span className="text-[10px] font-mono font-bold text-[var(--gold)] tracking-[0.4em] uppercase">{t.team.eyebrow}</span>
+            <span className="text-xs font-mono font-semibold text-[var(--gold)] tracking-[0.16em] uppercase">{t.team.eyebrow}</span>
           </div>
           
-          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-black text-[var(--cream)] tracking-tight leading-[0.95] max-w-4xl mx-auto">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[var(--cream)] tracking-tight leading-[1.15] max-w-4xl mx-auto">
             {t.team.title}
           </h2>
         </div>
@@ -157,7 +157,7 @@ export const TeamSection: React.FC = () => {
                   
                   {/* Content (Bottom Left) */}
                   <div className="absolute bottom-0 left-0 p-10 w-full z-10 text-white">
-                    <h3 className="text-2xl font-semibold mb-1 tracking-tight">
+                    <h3 className="text-xl sm:text-2xl font-serif font-semibold mb-1 tracking-tight">
                       {member.name}
                     </h3>
                     <p className="text-sm font-medium text-white/80">

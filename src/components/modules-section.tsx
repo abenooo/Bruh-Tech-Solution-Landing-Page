@@ -15,7 +15,7 @@ export function ModulesSection() {
         <Reveal className="svc-head" as="div">
           <div>
             <div className="eyebrow">{t.modules.eyebrow}</div>
-            <h2 className="display" style={{ fontSize: "clamp(2.5rem, 7.5vw, 7rem)", margin: "20px 0 0" }}>
+            <h2 className="display" style={{ fontSize: "clamp(2.25rem, 1.85rem + 2.2vw, 3.5rem)", lineHeight: 1.15, margin: "16px 0 0" }}>
               {t.modules.title}
             </h2>
           </div>

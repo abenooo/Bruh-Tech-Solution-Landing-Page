@@ -11,10 +11,10 @@ export function CtaSection() {
       <div className="container" style={{ textAlign: "center" }}>
         <Reveal>
           <div className="eyebrow">{t.contact.eyebrow}</div>
-          <h2 className="display" style={{ fontSize: "clamp(36px, 6.6vw, 84px)", margin: "20px auto 18px", maxWidth: 900 }}>
+          <h2 className="display" style={{ fontSize: "clamp(2.25rem, 1.85rem + 2vw, 3.5rem)", lineHeight: 1.15, margin: "18px auto 16px", maxWidth: 860 }}>
             {t.contact.title}
           </h2>
-          <p style={{ color: "var(--muted)", maxWidth: 520, margin: "0 auto 32px", lineHeight: 1.65 }}>
+          <p style={{ color: "var(--muted)", fontSize: "clamp(1rem, 0.95rem + 0.25vw, 1.125rem)", maxWidth: 540, margin: "0 auto 32px", lineHeight: 1.65 }}>
             {t.contact.desc}
           </p>
           <a className="btn btn-gold" href={`mailto:${t.contact.email}`}>

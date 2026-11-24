@@ -30,10 +30,10 @@ export function ThenNow() {
       <div className="container">
         <Reveal>
           <div className="eyebrow">{t.thenNow.eyebrow}</div>
-          <h2 className="display" style={{ fontSize: "clamp(28px, 4.2vw, 50px)", maxWidth: 760, margin: "18px 0 0" }}>
+          <h2 className="display" style={{ fontSize: "clamp(2.1rem, 1.75rem + 1.7vw, 3.15rem)", lineHeight: 1.18, maxWidth: 760, margin: "16px 0 0" }}>
             {t.thenNow.title}
           </h2>
-          <p style={{ color: "var(--muted)", maxWidth: 560, lineHeight: 1.65, margin: "16px 0 0" }}>
+          <p style={{ color: "var(--muted)", fontSize: "clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem)", maxWidth: 560, lineHeight: 1.65, margin: "16px 0 0" }}>
             {t.thenNow.desc}
           </p>
         </Reveal>
